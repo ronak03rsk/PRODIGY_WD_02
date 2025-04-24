@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Stopwatch</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/png" href="/img1.png">
     <script src="stopwatch.js"></script>
   </head>
   <body>
@@ -23,5 +25,23 @@
       <button id="reset">Reset</button>
       <button id="lap">Lap</button>
     </div>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/service-worker.js')
+            .then(reg => console.log('Service Worker registered:', reg.scope))
+            .catch(err => console.error('Registration failed:', err));
+        });
+      }
+    </script>    
+    <script>
+      if ('Notification' in window) {
+        Notification.requestPermission().then(permission => {
+          if (permission === 'granted') {
+            new Notification('Notifications enabled for Stopwatch');
+          }
+        });
+      }
+    </script>
   </body>
 </html>
